@@ -7,5 +7,7 @@ Rails.application.routes.draw do
   } 
   post 'users/forgot_password' => "users/passwords#forgot"
   post 'users/reset_password' => "users/passwords#reset"
-  get 'users/verify_otp' => "users/passwords#verify_otp"
+ # get 'users/verify_otp' => "users/passwords#verify_otp"
+  match 'users/verify_otp' => 'users/passwords#verify_otp', via: [:get]
+
 end

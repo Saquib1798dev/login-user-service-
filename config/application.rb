@@ -12,8 +12,8 @@ require "action_mailbox/engine"
 require "action_text/engine"
 require "action_view/railtie"
 require "action_cable/engine"
-require "sprockets/railtie"
-# require "rails/test_unit/railtie"
+# require "sprockets/railtie" # This removes sprockets
+require "rails/test_unit/railtie"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -32,6 +32,7 @@ module LoginReg
     # the framework and any gems in your application.
 
     # Don't generate system test files.
+    config.api_only = true
     config.generators.system_tests = nil
   end
 end
