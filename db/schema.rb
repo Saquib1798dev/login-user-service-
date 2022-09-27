@@ -15,24 +15,6 @@ ActiveRecord::Schema.define(version: 2022_09_20_134210) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "addresses", force: :cascade do |t|
-    t.float "latitude"
-    t.float "longitude"
-    t.string "complete_address"
-    t.integer "address_type"
-    t.string "floor"
-    t.boolean "default_address"
-    t.bigint "user_id"
-    t.index ["user_id"], name: "index_addresses_on_user_id"
-  end
-
-  create_table "items", force: :cascade do |t|
-    t.string "name"
-    t.integer "price"
-    t.boolean "availability"
-    t.text "description"
-  end
-
   create_table "otps", force: :cascade do |t|
     t.integer "otp_digits"
     t.boolean "otp_verified"
@@ -63,5 +45,4 @@ ActiveRecord::Schema.define(version: 2022_09_20_134210) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "addresses", "users"
 end

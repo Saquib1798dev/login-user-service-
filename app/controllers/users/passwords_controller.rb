@@ -7,18 +7,18 @@ class Users::PasswordsController < ApplicationController
   def forgot
     if @user.present?
       if @otp.present?
-       @otp = update_otp(@otp)
+        @otp = update_otp(@otp)
       else
         @otp = create_otp(@user)
       end
       render json: {
-        data: @user, otp_data: @user.otps.where(otp_type: @otp.otp_type).first
-      }
+        data: @user, otp_data: @user.otps.where(otp_type: @otp.otp_type).first, message: "The otp for the user has been created", success: true
+      }, status: :ok
     else
       #this sends regardless of whether there's an email in database for security reasons
       render json: {
-        message: "No such account exist with this email or number"
-      }
+        message: "No such account exist with this email or number", success: false
+      }, status: :unprocessable_entity
     end 
   end
 
@@ -26,10 +26,10 @@ class Users::PasswordsController < ApplicationController
     otp = @user.otps.where(["otp_digits = ?", "#{params[:otp]}"]).first
     if otp.present?
       if otp.update(otp_verified: true)
-        render json: {data: otp, message: "Otp has been verified"}
+        render json: {data: otp, message: "Otp has been verified", success: true}
       end
     else
-      render json: {message: "Incorrect Otp"}
+      render json: {message: "Incorrect Otp"}, status: :unprocessable_entity
     end
   end
 
@@ -38,12 +38,12 @@ class Users::PasswordsController < ApplicationController
     otp = @user.otps.where(["otp_token = ?", "#{params[:otp_token]}"]).first
     if otp.present? && otp.otp_verified
       if @user.update(password: params[:password])
-        render json: { data: @user }
+        render json: { data: @user, message: "The Password is updated", success: true }, status: :ok
       else
-        render json: {message: "Password Cannot be updated"}
+        render json: {message: "Password Cannot be updated", success: false}, status: :unprocessable_entity
       end
     else
-      render json: {message: "Otp not verified"}
+      render json: {message: "Otp not verified", success: false},  status: :unprocessable_entity
     end
   end
 
