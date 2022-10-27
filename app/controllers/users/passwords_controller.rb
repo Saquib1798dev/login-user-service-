@@ -69,7 +69,9 @@ class Users::PasswordsController < ApplicationController
 
   def find_otp
     type = params[:otp_type]
-    @otp = @user.otps.where(otp_type: type).first
+    if @user
+      @otp = @user.otps.where(otp_type: type).first
+    end 
   end
 
 

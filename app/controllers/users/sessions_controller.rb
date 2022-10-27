@@ -4,11 +4,11 @@ class Users::SessionsController < Devise::SessionsController
   respond_to :json
   private
 
+
   def respond_with(resource, _opts = {})
     render json: {
-      status: {success: true, message: 'Logged in sucessfully.'},
-      data: resource
-    }, status: :ok
+      data: resource, message: 'Logged in sucessfully.', success: true },
+      status: :ok
   end
 
   def respond_to_on_destroy
@@ -23,5 +23,9 @@ class Users::SessionsController < Devise::SessionsController
         message: "Couldn't find an active session."
       }, status: :unauthorized
     end
+  end
+
+  def login_failed
+    debugger
   end
 end
